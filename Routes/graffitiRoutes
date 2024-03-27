@@ -3,9 +3,9 @@ const router = express.Router();
 const graffitiController = require("../Controllers/GraffitiController");
 
 router.route("/").get(graffitiController.getAllGraffiti);
-router.route("/").get(graffitiController.updateGraffiti);
-router.route("/").get(graffitiController.deleteGraffiti);
-router.route("/").get(graffitiController.createNewGraffiti);
+router.route("/").patch(graffitiController.updateGraffiti);
+router.route("/").delete(graffitiController.deleteGraffiti);
+router.route("/").post(graffitiController.createNewGraffiti);
 router.route("/:id").get(graffitiController.getGraffiti);
 
 module.exports = router;
