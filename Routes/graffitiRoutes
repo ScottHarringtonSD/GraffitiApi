@@ -1,0 +1,11 @@
+const express = require("express");
+const router = express.Router();
+const graffitiController = require("../Controllers/GraffitiController");
+
+router.route("/").get(graffitiController.getAllGraffiti);
+router.route("/").get(graffitiController.updateGraffiti);
+router.route("/").get(graffitiController.deleteGraffiti);
+router.route("/").get(graffitiController.createNewGraffiti);
+router.route("/:id").get(graffitiController.getGraffiti);
+
+module.exports = router;
