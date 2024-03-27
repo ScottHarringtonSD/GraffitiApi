@@ -1,3 +1,4 @@
+const { json } = require("express");
 const Graffiti = require("../Models/Graffiti");
 const asyncHandler = require("express-async-handler");
 
@@ -88,7 +89,7 @@ const updateGraffiti = asyncHandler(async (req, res) => {
     return res.status(400).json({ message: "Please fill in required fields" });
 
   const graffiti = await Graffiti.findById(id).exec();
-  if (!graffiti) return res.status(400).json({ message: "Note not found" });
+  if (!graffiti) return res.status(400).json({ message: "Graffiti not found" });
 
   const duplicate = await Graffiti.findOne({ graffitiSurveyNumber })
     .lean()
@@ -125,7 +126,7 @@ const deleteGraffiti = asyncHandler(async (req, res) => {
     return res.status(400).json({ message: "Graffiti id not found" });
 
   const result = await graffiti.deleteOne();
-  const reply = `Note ${result.title} with id ${result._id} deleted`;
+  const reply = `Entry deleted successfully: ${result.acknowledged}`;
 
   res.json(reply);
 });
@@ -141,7 +142,7 @@ const getGraffiti = asyncHandler(async (req, res) => {
   if (!graffiti)
     return res.status(400).json({ message: "Graffiti id not found" });
 
-  //res.json(graffiti);
+  const rawResponse = res.json(graffiti);
   res.json(graffiti);
 });
 
