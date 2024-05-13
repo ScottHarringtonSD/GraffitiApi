@@ -8,9 +8,7 @@ const GraffitiSchema = mongoose.Schema({
   address: { type: String, required: true },
   description: { type: String, required: true },
   postcode: { type: String, required: true },
-  location: [
-    { longitude: { type: Decimal128 }, latitude: { type: Decimal128 } },
-  ],
+  location: { longitude: { type: Number }, latitude: { type: Number } },
   imgLocation: { type: String },
 });
 

@@ -5,7 +5,7 @@ const asyncHandler = require("express-async-handler");
 // Get all graffiti
 // route = /graffitis GET
 const getAllGraffiti = asyncHandler(async (req, res) => {
-  const graffitis = await Graffiti.find().lean();
+  const graffitis = await Graffiti.find().lean().exec();
   if (!graffitis?.length)
     return res.status(400).json({ message: "No graffiti found" });
 
@@ -65,7 +65,7 @@ const createNewGraffiti = asyncHandler(async (req, res) => {
 // @route PATCH /graffitis
 const updateGraffiti = asyncHandler(async (req, res) => {
   const {
-    id,
+    _id,
     graffitiSurveyNumber,
     name,
     size,
@@ -88,14 +88,14 @@ const updateGraffiti = asyncHandler(async (req, res) => {
   )
     return res.status(400).json({ message: "Please fill in required fields" });
 
-  const graffiti = await Graffiti.findById(id).exec();
+  const graffiti = await Graffiti.findById(_id).exec();
   if (!graffiti) return res.status(400).json({ message: "Graffiti not found" });
 
   const duplicate = await Graffiti.findOne({ graffitiSurveyNumber })
     .lean()
     .exec();
 
-  if (duplicate && duplicate?._id.toString() !== id) {
+  if (duplicate && duplicate?._id.toString() !== _id) {
     return res
       .status(409)
       .json({ message: "Duplicate graffiti survey numbers" });
@@ -111,7 +111,7 @@ const updateGraffiti = asyncHandler(async (req, res) => {
   graffiti.imgLocation = imgLocation;
 
   const updatedGraffiti = await graffiti.save();
-  res.json(`${updatedGraffiti.graffitiSurveyNumber} updated`);
+  res.json(updatedGraffiti);
 });
 
 // @desc Delete graffiti
