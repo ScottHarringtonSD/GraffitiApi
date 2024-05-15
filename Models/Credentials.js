@@ -6,4 +6,4 @@ const CredentialsSchema = mongoose.Schema({
   password: { type: String, required: true },
 });
 
-module.exports = mongoose.model("Credentials", CredentialsSchema);
+module.exports = mongoose.model("Credential", CredentialsSchema);
