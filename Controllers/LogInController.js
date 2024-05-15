@@ -13,10 +13,20 @@ const login = asyncHandler(async (req, res) => {
 
   const loginDetails = await Credentials.findOne({ username }).lean().exec();
 
-  if (loginDetails === null || loginDetails.password !== req.body.password) {
+  if (loginDetails === null) {
     return res
       .status(401)
-      .json({ message: "Incorrect login details provided" });
+      .json({ message: "Incorrect login details provided 1" }, loginDetails);
+  }
+
+  if (loginDetails.password !== password) {
+    return res
+      .status(401)
+      .json(
+        { message: "Incorrect login details provided 2" },
+        password,
+        loginDetails.password
+      );
   }
 
   const token = await Token.findOne();
