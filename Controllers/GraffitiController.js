@@ -132,7 +132,7 @@ const deleteGraffiti = asyncHandler(async (req, res) => {
 });
 
 // gets a graffiti by id
-//route = graffitis/{_id}
+// route = graffitis/{_id}
 const getGraffiti = asyncHandler(async (req, res) => {
   const { id } = req.params;
   if (!id) return res.status(400).json({ messaage: "Graffiti id required" });

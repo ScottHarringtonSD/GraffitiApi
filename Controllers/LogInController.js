@@ -3,9 +3,8 @@ const Credentials = require("../Models/Credentials");
 const asyncHandler = require("express-async-handler");
 const Token = require("../Models/Token");
 
-//takes user credentials and returns a token if they match
-//route = /login POST
-
+// @desc = takes user credentials and returns a token if they match
+// @route /login POST
 const login = asyncHandler(async (req, res) => {
   const { username, password } = req.body;
   if (!username || !password) {
@@ -28,3 +27,7 @@ const login = asyncHandler(async (req, res) => {
 
   res.status(400).json({ message: "Invalid data received" });
 });
+
+module.exports = {
+  login,
+};
