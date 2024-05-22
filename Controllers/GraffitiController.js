@@ -1,10 +1,32 @@
 const { json } = require("express");
 const Graffiti = require("../Models/Graffiti");
 const asyncHandler = require("express-async-handler");
+const TokenAuth = require("../HelperClasses/TokenAuth");
 
 // Get all graffiti
 // route = /graffitis GET
 const getAllGraffiti = asyncHandler(async (req, res) => {
+  const jwt = require("njwt");
+  let token = "";
+  var tokenCheck = false;
+
+  for (let i = 0; i < req.rawHeaders.length; i++) {
+    if (req.rawHeaders[i] === "Auth") {
+      quotesToken = req.rawHeaders[i + 1];
+      token = quotesToken.replace(/^["'](.+(?=["']$))["']$/, "$1");
+    }
+  }
+  await jwt.verify(token, "graf-token-secret", (err, verifiedJwt) => {
+    if (err) {
+      console.log("failed at token check");
+    } else {
+      tokenCheck = true;
+    }
+  });
+
+  if (!tokenCheck) {
+    return res.status(401).json({ message: "Token authentication failed" });
+  }
   const graffitis = await Graffiti.find().lean().exec();
   if (!graffitis?.length)
     return res.status(400).json({ message: "No graffiti found" });
@@ -15,6 +37,27 @@ const getAllGraffiti = asyncHandler(async (req, res) => {
 // Create new Graffiti
 // route = /graffitis POST
 const createNewGraffiti = asyncHandler(async (req, res) => {
+  const jwt = require("njwt");
+  let token = "";
+  var tokenCheck = false;
+
+  for (let i = 0; i < req.rawHeaders.length; i++) {
+    if (req.rawHeaders[i] === "Auth") {
+      quotesToken = req.rawHeaders[i + 1];
+      token = quotesToken.replace(/^["'](.+(?=["']$))["']$/, "$1");
+    }
+  }
+  await jwt.verify(token, "graf-token-secret", (err, verifiedJwt) => {
+    if (err) {
+      console.log("failed at token check");
+    } else {
+      tokenCheck = true;
+    }
+  });
+
+  if (!tokenCheck) {
+    return res.status(401).json({ message: "Token authentication failed" });
+  }
   const {
     graffitiSurveyNumber,
     name,
@@ -64,6 +107,27 @@ const createNewGraffiti = asyncHandler(async (req, res) => {
 // @desc Update graffiti
 // @route PATCH /graffitis
 const updateGraffiti = asyncHandler(async (req, res) => {
+  const jwt = require("njwt");
+  let token = "";
+  var tokenCheck = false;
+
+  for (let i = 0; i < req.rawHeaders.length; i++) {
+    if (req.rawHeaders[i] === "Auth") {
+      quotesToken = req.rawHeaders[i + 1];
+      token = quotesToken.replace(/^["'](.+(?=["']$))["']$/, "$1");
+    }
+  }
+  await jwt.verify(token, "graf-token-secret", (err, verifiedJwt) => {
+    if (err) {
+      console.log("failed at token check");
+    } else {
+      tokenCheck = true;
+    }
+  });
+
+  if (!tokenCheck) {
+    return res.status(401).json({ message: "Token authentication failed" });
+  }
   const {
     _id,
     graffitiSurveyNumber,
@@ -117,6 +181,27 @@ const updateGraffiti = asyncHandler(async (req, res) => {
 // @desc Delete graffiti
 // @route Delete /graffiti
 const deleteGraffiti = asyncHandler(async (req, res) => {
+  const jwt = require("njwt");
+  let token = "";
+  var tokenCheck = false;
+
+  for (let i = 0; i < req.rawHeaders.length; i++) {
+    if (req.rawHeaders[i] === "Auth") {
+      quotesToken = req.rawHeaders[i + 1];
+      token = quotesToken.replace(/^["'](.+(?=["']$))["']$/, "$1");
+    }
+  }
+  await jwt.verify(token, "graf-token-secret", (err, verifiedJwt) => {
+    if (err) {
+      console.log("failed at token check");
+    } else {
+      tokenCheck = true;
+    }
+  });
+
+  if (!tokenCheck) {
+    return res.status(401).json({ message: "Token authentication failed" });
+  }
   const { id } = req.body;
 
   if (!id) return res.status(400).json({ messaage: "Graffiti id required" });
@@ -134,6 +219,27 @@ const deleteGraffiti = asyncHandler(async (req, res) => {
 // gets a graffiti by id
 // route = graffitis/{_id}
 const getGraffiti = asyncHandler(async (req, res) => {
+  const jwt = require("njwt");
+  let token = "";
+  var tokenCheck = false;
+
+  for (let i = 0; i < req.rawHeaders.length; i++) {
+    if (req.rawHeaders[i] === "Auth") {
+      quotesToken = req.rawHeaders[i + 1];
+      token = quotesToken.replace(/^["'](.+(?=["']$))["']$/, "$1");
+    }
+  }
+  await jwt.verify(token, "graf-token-secret", (err, verifiedJwt) => {
+    if (err) {
+      console.log("failed at token check");
+    } else {
+      tokenCheck = true;
+    }
+  });
+
+  if (!tokenCheck) {
+    return res.status(401).json({ message: "Token authentication failed" });
+  }
   const { id } = req.params;
   if (!id) return res.status(400).json({ messaage: "Graffiti id required" });
 
@@ -142,8 +248,7 @@ const getGraffiti = asyncHandler(async (req, res) => {
   if (!graffiti)
     return res.status(400).json({ message: "Graffiti id not found" });
 
-  const rawResponse = res.json(graffiti);
-  res.json(graffiti);
+  return res.json(graffiti);
 });
 
 module.exports = {
