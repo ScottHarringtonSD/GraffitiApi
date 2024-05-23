@@ -179,7 +179,7 @@ const updateGraffiti = asyncHandler(async (req, res) => {
 });
 
 // @desc Delete graffiti
-// @route Delete /graffiti
+// @route Delete /graffitis
 const deleteGraffiti = asyncHandler(async (req, res) => {
   const jwt = require("njwt");
   let token = "";
@@ -202,11 +202,12 @@ const deleteGraffiti = asyncHandler(async (req, res) => {
   if (!tokenCheck) {
     return res.status(401).json({ message: "Token authentication failed" });
   }
-  const { id } = req.body;
 
-  if (!id) return res.status(400).json({ messaage: "Graffiti id required" });
+  const { _id } = req.body;
 
-  const graffiti = await Graffiti.findById(id).exec();
+  if (!_id) return res.status(400).json({ message: "Graffiti id required" });
+
+  const graffiti = await Graffiti.findById(_id).exec();
   if (!graffiti)
     return res.status(400).json({ message: "Graffiti id not found" });
 
