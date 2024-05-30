@@ -1,4 +1,4 @@
-const { json } = require("express");
+const { json, query } = require("express");
 const Graffiti = require("../Models/Graffiti");
 const asyncHandler = require("express-async-handler");
 const TokenAuth = require("../HelperClasses/TokenAuth");
@@ -27,6 +27,33 @@ const getAllGraffiti = asyncHandler(async (req, res) => {
   if (!tokenCheck) {
     return res.status(401).json({ message: "Token authentication failed" });
   }
+
+  const queryString = require("node:querystring");
+  const q = queryString.parse();
+  var search = req.query.search;
+
+  if (search) {
+    var re = new RegExp(search, "gi");
+    const graffitis = await Graffiti.find({
+      $or: [
+        {
+          name: { $regex: re },
+        },
+        {
+          graffitiSurveyNumber: { $regex: re },
+        },
+      ],
+    })
+      .lean()
+      .exec();
+
+    return res.json(graffitis);
+  }
+
+  if (search === "") {
+    return res.json(new Array());
+  }
+
   const graffitis = await Graffiti.find().lean().exec();
   if (!graffitis?.length)
     return res.status(400).json({ message: "No graffiti found" });
@@ -250,6 +277,16 @@ const getGraffiti = asyncHandler(async (req, res) => {
     return res.status(400).json({ message: "Graffiti id not found" });
 
   return res.json(graffiti);
+});
+
+const searchGraffiti = asyncHandler(async (req, res) => {
+  const queryString = require("node:querystring");
+  const q = queryString.parse();
+  console.log(q);
+
+  console.log("this has been hit");
+
+  return res.status(201).json({ message: "test" });
 });
 
 module.exports = {
