@@ -16,7 +16,7 @@ app.use(
   createRouteHandler({
     router: uploadRouter,
     config: {
-      callbackUrl: "http://localhost:3000",
+      callbackUrl: "https://graffitiapi.onrender.com",
       /**
        * Your UploadThing app id. You can find this on the UploadThing dashboard.
        */
