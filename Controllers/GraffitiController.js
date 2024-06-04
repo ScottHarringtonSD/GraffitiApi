@@ -42,6 +42,12 @@ const getAllGraffiti = asyncHandler(async (req, res) => {
         {
           graffitiSurveyNumber: { $regex: re },
         },
+        {
+          address: { $regex: re },
+        },
+        {
+          description: { $regex: re },
+        },
       ],
     })
       .lean()

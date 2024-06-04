@@ -1,4 +1,6 @@
 require("dotenv").config();
+const { uploadRouter } = require("./uploadthing");
+const { createRouteHandler } = require("uploadthing/express");
 const connectDB = require("./dbConn");
 const mongoose = require("mongoose");
 const express = require("express");
@@ -9,6 +11,25 @@ app.use(express.json());
 app.use(cors());
 app.use("/graffitis", require("./Routes/graffitiRoutes"));
 app.use("/login", require("./Routes/loginRoutes"));
+app.use(
+  "/api/uploadthing",
+  createRouteHandler({
+    router: uploadRouter,
+    config: {
+      callbackUrl: "http://localhost:3000",
+      /**
+       * Your UploadThing app id. You can find this on the UploadThing dashboard.
+       */
+      uploadthingId: process.env.UPLOADTHING_APP_ID,
+      /**
+       * Your UploadThing API key. You can find this on the UploadThing dashboard.
+       */
+      uploadthingSecret: process.env.UPLOADTHING_SECRET,
+      logLevel: "info",
+      isDev: true,
+    },
+  })
+);
 
 connectDB();
 

@@ -23,7 +23,8 @@
     "express-async-handler": "^1.2.0",
     "mongodb": "^6.5.0",
     "mongoose": "^8.2.3",
-    "njwt": "^0.4.0"
+    "njwt": "^0.4.0",
+    "uploadthing": "^6.12.0"
   },
   "devDependencies": {
     "dotenv": "^16.4.5",
